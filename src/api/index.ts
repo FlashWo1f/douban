@@ -12,8 +12,10 @@ let instance = axios.create({
 });
 
 // 热映
-export function getHotShowing() {
-  return instance.get("/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b");
+export function getHotShowing(params: any) {
+  return instance.get("/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b", {
+    params
+  });
 }
 
 // top250
@@ -23,10 +25,10 @@ export function getTop250() {
 
 // 新片
 export function getNew() {
-  return instance.get("/new_movies");
+  return instance.get("/new_movies?apikey=0b2bdeda43b5688921839c8ecb20399b");
 }
 
 // 电影详情
 export function getDetail(id: string) {
-  return instance.get(id);
+  return instance.get(`/subject/${id}?apikey=0b2bdeda43b5688921839c8ecb20399b`);
 }
