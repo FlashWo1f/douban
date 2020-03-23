@@ -1,57 +1,9 @@
 import React from "react";
-import { Card, Tag, Skeleton } from 'antd';
+import { Card, Tag } from 'antd';
 import { getHotShowing, getNew, getGoodbox } from "../api";
 import { Link } from 'react-router-dom';
-import loadingSvg from '../assets/loading.svg';
-
-
-function CardComp(props: any) {
-  let { isLoading, data } = props;
-
-  if (isLoading) {
-    return (
-      <Card
-        loading={true}
-        className="movie-card"
-        hoverable
-        cover={
-          <div className="loading-img-box">
-            <img src={loadingSvg} alt="loading" />
-          </div>
-        }
-      />
-    );
-  }
-
-  return (
-    <Card
-      className="movie-card"
-      hoverable
-      cover={
-        <Link to={`/detail/${data.id}`}>
-          <img src={data.images.small} alt="" />
-        </Link>
-      }
-    >
-      <Tag color="#f50" className="img-tag">{data.rating.average}</Tag>
-      <Card.Meta
-        title={data.title}
-        description={data.genres.join("/")}
-      />
-    </Card>
-  );
-}
-
-function ListComp() {
-  return (
-    <li className="goodbox-rate">
-      <Skeleton className="title" paragraph={false} />
-      <Skeleton className="summary" title={false} paragraph={{ rows: 1 }} />
-      <span className="rank">0</span>
-      <span className="box">0 万</span>
-    </li>
-  );
-}
+import { CardListSkeleton, ListSkeleton } from "../skeletons/Home"
+import '../css/Home.css';
 
 class Home extends React.Component {
   constructor(props: any) {
@@ -102,7 +54,7 @@ class Home extends React.Component {
       });
   }
   render() {
-    let {
+    const {
       hotShowList,
       newMovieList,
       goodBoxList,
@@ -118,15 +70,29 @@ class Home extends React.Component {
             <h2 className="raw-title">正在热映</h2>
           </div>
           <div className="cards-box clearfix">
-            {hotShowList.map((item: any, index: number) => {
-              return (
-                <CardComp
-                  key={index}
-                  data={item}
-                  isLoading={isLoadingHotShow}
-                />
-              );
-            })}
+            {
+              isLoadingHotShow ? <CardListSkeleton column={6} /> :
+                hotShowList.map((item: any, index: number) => {
+                  return (
+                    <Card
+                      className="movie-card"
+                      hoverable
+                      cover={
+                        <Link to={`/detail/${item.id}`}>
+                          <img src={item.images.small} alt="" />
+                        </Link>
+                      }
+                    >
+                      <Tag color="#f50" className="img-tag">{item.rating.average}</Tag>
+                      <Card.Meta
+                        title={item.title}
+                        description={item.genres.join("/")}
+                      />
+                    </Card>
+                  );
+                })
+
+            }
           </div>
         </div>
         <div className="block block-newmovie">
@@ -134,15 +100,27 @@ class Home extends React.Component {
             <h2 className="raw-title">新片榜</h2>
           </div>
           <div className="cards-box clearfix">
-            {newMovieList.map((item: any, index: number) => {
-              return (
-                <CardComp
-                  key={index}
-                  data={item}
-                  isLoading={isLoadingNewMovie}
-                />
-              );
-            })}
+            {
+              isLoadingNewMovie ?
+                <CardListSkeleton column={4} /> :
+                newMovieList.map((item: any, index: number) => {
+                  return (
+                    <Card
+                      key={index}
+                      className="movie-card"
+                      hoverable
+                      cover={
+                        <Link to={`/detail/${item.id}`}><img src={item.images.small} alt="" /></Link>
+                      }
+                    >
+                      <Tag color="#f50" className="img-tag">{item.rating.average}</Tag>
+                      <Card.Meta
+                        title={item.title}
+                        description={item.genres.join("/")}
+                      />
+                    </Card>
+                  );
+                })}
           </div>
           <div className="rate-box">
             <div className="line-raw">
@@ -151,39 +129,34 @@ class Home extends React.Component {
             </div>
             <ul className="goodbox">
               {
-                goodBoxList.map((item: any, index: number) => {
-                  if (isLoadingGoodBox) {
-                    return <ListComp key={index} />;
-                  }
+                isLoadingGoodBox ?
+                  <ListSkeleton row={2} /> :
+                  goodBoxList.map((item: any, index: number) => {
+                    const { rank, box, subject } = item;
+                    const { title, id, rating, collect_count } = subject;
+                    const { average } = rating;
+                    const isNew = item.new;
+                    const summaryList = [];
+                    let summary = "";
+                    if (isNew) {
+                      summaryList.push("<span class='box-new'>新上榜</span>");
+                    }
 
-                  let { rank, box, subject } = item;
-                  let { title, id, rating, collect_count } = subject;
-                  let { average } = rating;
+                    summaryList.push(`${average || 0} 分`);
+                    summaryList.push(`${collect_count} 收藏`);
+                    summary = summaryList.join(" / ");
 
-                  let isNew = item.new;
-
-                  let summaryList = [];
-                  let summary = "";
-
-                  if (isNew) {
-                    summaryList.push("<span class='box-new'>新上榜</span>");
-                  }
-
-                  summaryList.push(`${average || 0} 分`);
-                  summaryList.push(`${collect_count} 收藏`);
-                  summary = summaryList.join(" / ");
-
-                  return (
-                    <li className="goodbox-rate" key={index}>
-                      <Link to={`/detail/${id}`}>
-                        <h3 className="title">{title}</h3>
-                        <p className="summary" dangerouslySetInnerHTML={{ __html: summary }}></p>
-                        <span className="rank">{rank}</span>
-                        <span className="box">{box / 1e4} 万</span>
-                      </Link>
-                    </li>
-                  );
-                })
+                    return (
+                      <li className="goodbox-rate" key={index}>
+                        <Link to={`/detail/${id}`}>
+                          <h3 className="title">{title}</h3>
+                          <p className="summary" dangerouslySetInnerHTML={{ __html: summary }}></p>
+                          <span className="rank">{rank}</span>
+                          <span className="box">{box / 1e4} 万</span>
+                        </Link>
+                      </li>
+                    );
+                  })
               }
             </ul>
           </div>

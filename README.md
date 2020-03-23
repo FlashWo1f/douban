@@ -57,3 +57,11 @@ let {
 /* format：此值指的是你自定义的字体的格式，主要用来帮助浏览器识别，其值主要有以下几种类型：truetype,opentype,truetype-aat,embedded-opentype,avg等 */
 /* 本项目用到的format("truetype") = > .ttf => TrueTypeFont 的缩写 */
 ```
+
+- 将skeletons从pages中抽离出来，模块清晰。
+- 将app.css 中的模块CSS抽离
+
+## git
+
+- 查看两次commit的差别
+> git diff 421643b7f372a571c3f452dac740a82152536fcf(com1) 3a28e5179df84667ab8579d484430afdbda0fd3b(com2) --stat
