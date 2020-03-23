@@ -13,9 +13,7 @@ let instance = axios.create({
 
 // 热映
 export function getHotShowing(params: any) {
-  return instance.get("/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b", {
-    params
-  });
+  return instance.get("/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b");
 }
 
 // top250
@@ -31,4 +29,9 @@ export function getNew() {
 // 电影详情
 export function getDetail(id: string) {
   return instance.get(`/subject/${id}?apikey=0b2bdeda43b5688921839c8ecb20399b`);
+}
+
+// 北美票房榜
+export function getGoodbox() {
+  return instance.get("/us_box?apikey=0b2bdeda43b5688921839c8ecb20399b");
 }
