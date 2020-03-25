@@ -1,7 +1,20 @@
+/* reset.css */
+
+ul {
+  list-style: none;
+}
+
+body, div, p, span, a, img, ul, ol, h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+}
+
 :root {
   --hoverColor: #ff5c38;
   --highlightColor: #f00;
   --backColor: #2d2e36;
+  --foreColor: #fff;
+  --oneOfSix: 16.666667%;
 }
 
 @font-face {
@@ -18,15 +31,6 @@ body {
   font-family: numFont, PingFangSC-Regular, Tahoma, "Microsoft Yahei", sans-serif;
 }
 
-ul {
-  list-style: none;
-}
-
-ul {
-  padding: 0;
-  margin: 0;
-}
-
 .clearfix:after {
   content: "";
   clear: both;
@@ -36,4 +40,8 @@ ul {
 
 .raw-title {
   font-size: 1.5rem;
+}
+
+.page {
+  min-width: 1000px;
 }

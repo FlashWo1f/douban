@@ -14,20 +14,48 @@ export function CardListSkeleton(props: ICardList) {
       {
         list.map((item: any, index: number) => {
           return (
-            <Card
-              key={index}
-              loading={true}
-              className="movie-card"
-              cover={
-                <div className="loading-img-box">
-                  <img src={loadingSvg} alt="loading" />
-                </div>
-              }
-            />
+            <div className="card-container" key={index}>
+              <Card
+                key={index}
+                loading={true}
+                className="movie-card"
+                cover={
+                  <div className="loading-img-box">
+                    <img src={loadingSvg} alt="loading" />
+                  </div>
+                }
+              />
+            </div>
           );
         })
       }
     </>
+  );
+}
+
+export function CardListTop250Skeleton() {
+  let list = new Array(9).fill(1);
+  return (
+    <div className="cards-box clearfix">
+      {
+        list.map((item: any, index: number) => {
+          return (
+            <div className={["card-container", index === 0 ? "card-big" : ""].join(" ")} key={index}>
+              <Card
+                key={index}
+                loading={true}
+                className="movie-card"
+                cover={
+                  <div className="loading-img-box">
+                    <img src={loadingSvg} alt="loading" />
+                  </div>
+                }
+              />
+            </div>
+          );
+        })
+      }
+    </div>
   );
 }
 

@@ -26,6 +26,11 @@
   margin: 10px 0;
 }
 
+.profile-info .tags .tag-text {
+  background-color: var(--backColor);
+  color: var(--foreColor);
+}
+
 .video_summary {
   margin: 20px 0;
 }
@@ -51,6 +56,19 @@
 .profile-rate .box {
   color: #fff;
   font-size: 1rem;
+}
+
+.profile-rate .title {
+  position: absolute;
+  top: 0;
+  right: 120px;
+  width: 6em;
+  font-size: 5rem;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
 .photos-box {
@@ -101,12 +119,18 @@
 
 .video-box {
   position: relative;
+  height: 400px;
+  overflow: hidden;
+  background-color: #27272f;
 }
 
 .video-box video {
   width: 700px;
-  height: 400px;
-  background-color: #000;
+  height: 100%;
+}
+
+.video-box video:focus {
+  outline: none;
 }
 
 .box-list {
